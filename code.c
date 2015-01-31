@@ -1,53 +1,37 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-int *tuple[4] ;
-
-void print(int a,int b,int c,int d)
-{
-int n,z;
-int count=0;
-
-n=0;
-
-				tuple[0][n]=a;
-				tuple[1][n]=b;
-				tuple[2][n]=c;
-				tuple[3][n]=d;
-				
-				//printf("tuple: %d %d %d %d\n",tuple[0][n],tuple[1][n],tuple[2][n],tuple[3][n]);
-				n++;
-			if(n==1)
-			printf("\"%d,%d,%d,%d\"\n",a,b,c,d);
-			for(z=0;z<n-1;z++)
-			{ if(tuple[0][z]==a && tuple[1][z]==b && tuple[2][z]==c && tuple[3][z]==d)
-				break;
-			  else{ printf("\"%d,%d,%d,%d\"\n",a,b,c,d);
-			count++; break;}
-			}
-}
-
-
 int main()
 {
-int col;
-for(col=0;col <4;col++)
-         tuple[col] = (int *)malloc(sizeof(int));
 
 char line[50000];
 char line1[50000];	
-int *arr=(int *)malloc(sizeof(int));
+
 
 	int k,a,b,c,d;
 	int i,j,l,m;
+	int n,z;
 	i=0;	
 	int set_size=0;
-//int count=0;
+int count=0;
 scanf("%[^\n]", line);
-//printf("%s",line);
+
 int len=strlen(line);
 
+while(i<len)
+	{	
+	while(line[i] !=',' && i<len)
+	{
+	i++;
+	}
+	set_size++;
+	
+	i++;
+}
+
+
+int *arr=(int *)malloc(sizeof(int)*set_size);
+i=0;k=0;set_size=0;
 	while(i<len)
 {	
 	for(m=0;m<k;m++)
@@ -56,24 +40,39 @@ int len=strlen(line);
 	k=0;
 	
 	while(line[i] !=',' && i<len)
-	{ //printf("gng");
+	{ 
 	  line1[k] = line[i];
-	//printf("%s\n",line1);
+	
 	i++;k++;
 	}
 	
-	//printf("line1:%s\n",line1);
+	
 	arr[set_size]=atoi(line1);
-	//printf("converted val:%d\n",arr[j]);
+	
 	set_size++;
-	//printf("i:%d\n",i);
+
 	i++;
 
-}
+	}
 	k=arr[0];
+int repeat[set_size];
+repeat[0]=0;
+for(i=1;i<set_size;i++)
+{
+	for(j=1;j<set_size;j++)
+	{
+		if(arr[i] == arr[j] && i!=j)
+		{repeat[i] =1; break;}
+		else repeat[i]=0;
+	}
+}
+//for(i=1;i<set_size;i++)
+//printf("%d ",repeat[i]);
 	
-
-
+int dim=set_size*(set_size-2)*(set_size-3)*(set_size-4);
+int tuple[10000][4];
+    
+n=0;
 	for(i=1;i<set_size;i++)
 	{
 	 for(j=1;j<set_size;j++)
@@ -92,8 +91,27 @@ int len=strlen(line);
 			c=*(arr+m); d=*(arr+l);
 			if(a+b+c*d <= k)
 			{
-				print(a,b,c,d);				
-				
+			if(repeat[i]==1 || repeat[j]==1 || repeat[m] ==1 || repeat[l]==1)
+			{	
+			int check=1;
+			
+
+
+			if(n!=0){ if(tuple[n-1][0]==a){
+					for(z=0;z<n;z++){
+				if(tuple[z][1]==b && tuple[z][2]==c && tuple[z][3]==d)
+				{check =0;}
+				}}else n=0;}
+			if(check==1 ){ printf("\"%d,%d,%d,%d\"\n",a,b,c,d);
+				tuple[n][0]=a;
+				tuple[n][1]=b;
+				tuple[n][2]=c;
+				tuple[n][3]=d;n++;
+				count++;}
+			}
+			else printf("\"%d,%d,%d,%d\"\n",a,b,c,d);
+
+
 			}
 		  
 
